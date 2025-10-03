@@ -1,0 +1,48 @@
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# =====================
+# Entorno virtual
+# =====================
+venv/
+env/
+.venv/
+.env
+
+# =====================
+# Archivos de configuración sensibles
+# =====================
+*.env
+instance/
+config.json
+secrets.json
+
+# =====================
+# Logs
+# =====================
+*.log
+
+# =====================
+# Base de datos local
+# =====================
+*.sqlite3
+*.db
+
+# =====================
+# IDE / Editor
+# =====================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =====================
+# Otros
+# =====================
+.DS_Store
