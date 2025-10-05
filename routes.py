@@ -1,6 +1,9 @@
+import json
 from flask import Blueprint, request, jsonify
 import jwt
-from models import db, Product
+import psycopg2
+from db import get_cursor,conn
+from psycopg2.extras import RealDictCursor
 from flask_jwt_extended import jwt_required
 
 api = Blueprint('api', __name__)
@@ -8,14 +11,28 @@ api = Blueprint('api', __name__)
 @api.route("/products",methods=["GET"])
 @jwt_required()
 def get_products():
-    products = Product.query.all()
-    return jsonify([p.to_dict() for p in products])
+    try:
+        with get_cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM products")
+            prods = cur.fetchall()
+            return jsonify(prods)
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 
 @api.route("/products/<int:id>", methods=["GET"])
 @jwt_required()
 def get_product():
-    product = Product.query.get_or_404(id)
-    return jsonify(product.to_dict())
+    try:
+        with get_cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM products WHERE id = %s", (id,))
+            prod = cur.fetchone()
+            if prod:
+                return jsonify(prod)
+            else:
+                return jsonify({"Error":"Producto no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
 
 
 @api.route("/products", methods=["POST"])
