@@ -10,5 +10,4 @@ app.config["JSON_SORT_KEYS"] = False
 
 
 if __name__ == "__main__":
-    # debug=True solo para desarrollo local
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
