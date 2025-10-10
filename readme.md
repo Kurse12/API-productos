@@ -23,6 +23,24 @@ API REST para manejar productos, construida con **Flask** y **PostgreSQL**. Perm
 
 ---
 
+
+## ❗ Uso rápido (testeo)
+
+Para probar la API rápidamente, se puede usar la URL pública de Render:
+
+https://api-productos-1-b6rp.onrender.com
+
+
+GET /products → obtiene todos los productos
+
+POST /products → crea un producto (JSON)
+
+PATCH /products/<id> → actualiza un producto
+
+DELETE /products/<id> → elimina un producto
+---
+
+
 ## 📦 Estructura de la tabla `products`
 
 ```sql
