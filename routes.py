@@ -1,17 +1,10 @@
-import json
-import os
-from flask import Blueprint, request, jsonify, Flask
-from flask_jwt_extended import JWTManager
-import jwt
-import psycopg2
+from flask import Blueprint, request, jsonify
 from db import get_cursor,conn
 from psycopg2.extras import RealDictCursor
-from flask_jwt_extended import jwt_required
 
 api = Blueprint('api', __name__)
 
 @api.route("/products",methods=["GET"])
-@jwt_required()
 def get_products():
     try:
         with get_cursor(cursor_factory=RealDictCursor) as cur:
@@ -23,7 +16,6 @@ def get_products():
 
 
 @api.route("/products/<int:id>", methods=["GET"])
-@jwt_required()
 def get_product(id):
     try:
         with get_cursor(cursor_factory=RealDictCursor) as cur:
@@ -38,7 +30,6 @@ def get_product(id):
 
 
 @api.route("/products", methods=["POST"])
-@jwt_required()
 def create_product():
     data = request.json
     
@@ -51,7 +42,7 @@ def create_product():
             cur.execute("""
                         INSERT INTO products (nombre,precio, descripcion, stock)
                         VALUES (%s, %s, %s, %s)
-                        RETURNING id, nombre, precio, stock
+                        RETURNING id, nombre, precio, descripcion, stock
                         """, (data["nombre"], data.get("precio", 0), data.get("descripcion", 0), data.get("stock", 0)))
             
             new_prod = cur.fetchone()
@@ -65,7 +56,6 @@ def create_product():
             
 
 @api.route("/products/<int:id>", methods=["PATCH"])
-@jwt_required()
 def update_product(id):
     data = request.json
 
@@ -117,7 +107,6 @@ def update_product(id):
         return jsonify({"error": str(e)}), 500
 
 @api.route("/products/<int:id>", methods=["DELETE"])
-@jwt_required()
 def delete_product(id):
     try:
         with get_cursor(cursor_factory=RealDictCursor) as cur:

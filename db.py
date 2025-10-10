@@ -20,12 +20,8 @@ try:
 except Exception as error:
     print(error)
 
-finally:
-    if cur is not None:
-        cur.close()
-    if conn is not None:
-        conn.close()
 
-
-def get_cursor():
+def get_cursor(cursor_factory=None):
+    if cursor_factory:
+        return conn.cursor(cursor_factory=cursor_factory)
     return conn.cursor()
