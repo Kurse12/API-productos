@@ -1,12 +1,14 @@
 from flask import Flask
 from routes import api
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 
+
 app.register_blueprint(api)
 
+app.config["JSON_SORT_KEYS"] = False
+
+
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    # debug=True solo para desarrollo local
+    app.run(host="0.0.0.0", port=5000, debug=True)
